@@ -6,7 +6,11 @@
 
 axios.get('https://api.github.com/users/timbogdanov')
   .then(response => {
-    console.log(response);
+    const githubData = response.data;
+
+    const card = createGithubCard(githubData);
+    cardsContainer.appendChild(card);
+
   })
 
 /*
@@ -54,6 +58,63 @@ const followersArray = [];
       </div>
     </div>
 */
+
+const cardsContainer = document.querySelector('.cards');
+
+function createGithubCard(attrs) {
+
+  const avatarUrl = attrs.avatar_url;
+  const githubName = attrs.name;
+  const githubUserName = attrs.login;
+  const githubLocation = attrs.location;
+  const githubLink = attrs.html_url;
+  const githubFollowers = attrs.followers;
+  const githubFollowing = attrs.following;
+  const githubBio = attrs.bio;
+
+  const card = document.createElement('div');
+  const image = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const userURL = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  userName.classList.add('username');
+
+  card.appendChild(image);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  profile.appendChild(userURL);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  image.src = avatarUrl;
+  name.textContent = githubName;
+  userName.textContent = githubUserName;
+  location.textContent = `Location: ${githubLocation}`;
+  userURL.textContent = githubLink;
+  userURL.href = githubLink;
+  followers.textContent = `${githubFollowers} Followers`;
+  following.textContent = `${githubFollowing} Following`;
+  bio.textContent = `Bio: ${githubBio}`;
+
+
+  return card;
+}
+
+
 
 /*
   List of LS Instructors Github username's:
